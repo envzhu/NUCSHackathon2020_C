@@ -1,4 +1,4 @@
-package com.android.audiorecordtest
+package com.example.practice
 
 import android.Manifest
 import android.content.Context
@@ -15,10 +15,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import java.io.IOException
 
-private const val LOG_TAG = "AudioRecordTest"
+private const val LOG_TAG = "AudioRecord"
 private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
 
-class AudioRecordTest : AppCompatActivity() {
+class AudioRecord : AppCompatActivity() {
 
     private var fileName: String = ""
 
