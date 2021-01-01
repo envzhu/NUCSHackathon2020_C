@@ -6,13 +6,13 @@ import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import java.io.IOException
 
 private const val LOG_TAG = "AudioRecordTest"
@@ -24,9 +24,6 @@ class AudioRecordTest : AppCompatActivity() {
 
     private var recordButton: RecordButton? = null
     private var recorder: MediaRecorder? = null
-
-    private var playButton: PlayButton? = null
-    private var player: MediaPlayer? = null
 
     // Requesting permission to RECORD_AUDIO
     private var permissionToRecordAccepted = false
@@ -50,29 +47,6 @@ class AudioRecordTest : AppCompatActivity() {
         startRecording()
     } else {
         stopRecording()
-    }
-
-    private fun onPlay(start: Boolean) = if (start) {
-        startPlaying()
-    } else {
-        stopPlaying()
-    }
-
-    private fun startPlaying() {
-        player = MediaPlayer().apply {
-            try {
-                setDataSource(fileName)
-                prepare()
-                start()
-            } catch (e: IOException) {
-                Log.e(LOG_TAG, "prepare() failed")
-            }
-        }
-    }
-
-    private fun stopPlaying() {
-        player?.release()
-        player = null
     }
 
     private fun startRecording() {
@@ -119,40 +93,17 @@ class AudioRecordTest : AppCompatActivity() {
         }
     }
 
-    internal inner class PlayButton(ctx: Context) : Button(ctx) {
-        var mStartPlaying = true
-        var clicker: OnClickListener = OnClickListener {
-            onPlay(mStartPlaying)
-            text = when (mStartPlaying) {
-                true -> "Stop playing"
-                false -> "Start playing"
-            }
-            mStartPlaying = !mStartPlaying
-        }
-
-        init {
-            text = "Start playing"
-            setOnClickListener(clicker)
-        }
-    }
-
     override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
 
         // Record to the external cache directory for visibility
-        fileName = "${externalCacheDir.absolutePath}/audiorecordtest.3gp"
+        fileName = "./audiorecordtest.3gp"
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION)
 
         recordButton = RecordButton(this)
-        playButton = PlayButton(this)
         val ll = LinearLayout(this).apply {
             addView(recordButton,
-                    LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            0f))
-            addView(playButton,
                     LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -165,8 +116,6 @@ class AudioRecordTest : AppCompatActivity() {
         super.onStop()
         recorder?.release()
         recorder = null
-        player?.release()
-        player = null
     }
 }
 
