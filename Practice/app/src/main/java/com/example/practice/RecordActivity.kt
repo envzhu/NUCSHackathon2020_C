@@ -3,22 +3,20 @@ package com.example.practice
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.media.MediaPlayer
 import android.media.MediaRecorder
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import java.io.IOException
 
-private const val LOG_TAG = "AudioRecord"
+private const val LOG_TAG = "RecordActivity"
 private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
 
-class AudioRecord : AppCompatActivity() {
+class RecordActivity : AppCompatActivity() {
 
     private var fileName: String = ""
 
@@ -30,9 +28,9 @@ class AudioRecord : AppCompatActivity() {
     private var permissions: Array<String> = arrayOf(Manifest.permission.RECORD_AUDIO)
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         permissionToRecordAccepted = if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION) {
@@ -74,7 +72,7 @@ class AudioRecord : AppCompatActivity() {
         recorder = null
     }
 
-    internal inner class RecordButton(ctx: Context) : Button(ctx) {
+    internal inner class RecordButton(ctx: Context) : androidx.appcompat.widget.AppCompatButton(ctx) {
 
         var mStartRecording = true
 
@@ -95,6 +93,7 @@ class AudioRecord : AppCompatActivity() {
 
     override fun onCreate(icicle: Bundle?) {
         super.onCreate(icicle)
+        Log.e(LOG_TAG, "onCreate")
 
         // Record to the external cache directory for visibility
         fileName = "./audiorecordtest.3gp"
@@ -104,10 +103,10 @@ class AudioRecord : AppCompatActivity() {
         recordButton = RecordButton(this)
         val ll = LinearLayout(this).apply {
             addView(recordButton,
-                    LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            0f))
+                LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    0f))
         }
         setContentView(ll)
     }
@@ -118,4 +117,3 @@ class AudioRecord : AppCompatActivity() {
         recorder = null
     }
 }
-
