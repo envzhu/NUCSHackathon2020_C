@@ -24,6 +24,7 @@ class PlayerWrapper(
             is Alarmtone.Default -> RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
             is Alarmtone.Sound -> Uri.parse(alarmtone.uriString)
         }
+        Http().execute("GET", "http://localhost:5000/", filename)
         player?.setDataSource(filename)
 
         // player?.setDataSource(context, uri)
