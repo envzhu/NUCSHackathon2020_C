@@ -12,6 +12,7 @@
         android:name="android.permission.READ_PHONE_STATE"
         android:maxSdkVersion="22" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
@@ -21,8 +22,8 @@
         android:icon="@mipmap/ic_launcher"
         android:installLocation="internalOnly"
         android:label="@string/simple_alarm_clock"
-        android:allowBackup="true">
-
+        android:allowBackup="true"
+        android:requestLegacyExternalStorage="true"> // For android 10
         <!-- Activity to set a new or modify existing alarm -->
         <activity
             android:name=".presenter.AlarmsListActivity"

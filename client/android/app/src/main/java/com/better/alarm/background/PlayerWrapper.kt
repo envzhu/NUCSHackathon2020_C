@@ -9,6 +9,8 @@ import android.net.Uri
 import com.better.alarm.logger.Logger
 import com.better.alarm.model.Alarmtone
 
+val filename = "/storage/emulated/0/Download/alarm.mp3"
+
 class PlayerWrapper(
         val resources: Resources,
         val context: Context,
@@ -22,8 +24,9 @@ class PlayerWrapper(
             is Alarmtone.Default -> RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
             is Alarmtone.Sound -> Uri.parse(alarmtone.uriString)
         }
+        player?.setDataSource(filename)
 
-        player?.setDataSource(context, uri)
+        // player?.setDataSource(context, uri)
     }
 
     private var player: MediaPlayer? = MediaPlayer().apply {
@@ -37,6 +40,7 @@ class PlayerWrapper(
     }
 
     override fun startAlarm() {
+
         player?.runCatching {
             setAudioStreamType(AudioManager.STREAM_ALARM)
             isLooping = true
